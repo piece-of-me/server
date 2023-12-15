@@ -27,4 +27,12 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    public function render($request, Throwable $e): \Illuminate\Http\Response|\Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+    {
+        if ($request->is('api')) {
+            $request->headers->set('Accept', 'application/json');
+        }
+        return parent::render($request, $e);
+    }
 }
