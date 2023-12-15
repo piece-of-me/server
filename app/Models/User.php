@@ -2,44 +2,30 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property int id
+ * @property string login
+ * @property string password
+ * @property string firstname
+ * @property string lastname
+ * @property string|null birthdate
+ * @property string register_at
+ * @property string|null remember_token
+ * @property string created_at
+ * @property string updated_at
+ */
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, Notifiable, SoftDeletes;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    public $timestamps = true;
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
+    public const LOGIN_MAX_LENGTH = 50;
+    public const PASSWORD_MAX_LENGTH = 100;
+    public const FIO_MAX_LENGTH = 50;
 }
