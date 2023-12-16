@@ -9,17 +9,17 @@
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
-                <form>
+                <form id="auth-form">
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Логин</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1"
-                                   placeholder="Введите логин">
+                            <label for="login">Логин</label>
+                            <input type="text" class="form-control" id="login" name="login"
+                                   placeholder="Введите логин" required>
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputPassword1">Пароль</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1"
-                                   placeholder="Введите пароль">
+                            <label for="password">Пароль</label>
+                            <input type="password" class="form-control" id="password" name="password"
+                                   placeholder="Введите пароль" required>
                         </div>
                     </div>
                     <!-- /.card-body -->
@@ -37,4 +37,5 @@
             <!-- /.card -->
         </div>
     </div>
+    @vite('resources/js/login.js')
 @endsection

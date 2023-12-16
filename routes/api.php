@@ -20,4 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('users')->group(function () {
     Route::post('/register', [\App\Http\Controllers\UserController::class, 'store'])->name('users.store');
+    Route::post('/login', [\App\Http\Controllers\UserController::class, 'login'])->name('users.login');
 });
