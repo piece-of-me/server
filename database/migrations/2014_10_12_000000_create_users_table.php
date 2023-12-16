@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('firstname', User::FIO_MAX_LENGTH)->comment('Имя');
             $table->string('lastname', User::FIO_MAX_LENGTH)->comment('Фамилия');
             $table->timestamp('birthdate')->nullable()->comment('Дата рождения');
-            $table->timestamp('register_at')->comment('Дата регистрации');
+            $table->timestamp('register_at')->comment('Дата регистрации')->useCurrent();
 
             $table->rememberToken();
             $table->timestamps();

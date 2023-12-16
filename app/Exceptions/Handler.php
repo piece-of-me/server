@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -32,6 +33,10 @@ class Handler extends ExceptionHandler
     {
         if ($request->is('api')) {
             $request->headers->set('Accept', 'application/json');
+        }
+        dd($e);
+        if ($e instanceof HttpResponseException) {
+            dd('Yes');
         }
         return parent::render($request, $e);
     }
