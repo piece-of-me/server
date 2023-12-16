@@ -7,6 +7,7 @@ use App\Http\Requests\Api\User\StoreRequest;
 use App\Http\Requests\Api\User\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Cache;
 
 class UserController extends Controller
 {
@@ -19,12 +20,14 @@ class UserController extends Controller
         Auth::login($user);
         $token = Auth::user()->createToken('token');
 
+        $key = md5($user->login);
+        Cache::put($key, $user->login, 30);
         return response()->json([
             'error' => null,
             'result' => [
                 'success' => true,
                 'token' => $token->plainTextToken,
-                'url' => route('admin.index'),
+                'url' => route('auth.redirect', ['key' => $key]),
             ],
         ]);
     }
@@ -42,13 +45,16 @@ class UserController extends Controller
             ]);
         }
 
-        $token = Auth::user()->createToken('token');
+        $user = Auth::user();
+        $token = $user->createToken('token');
+        $key = md5($user->login);
+        Cache::put($key, $user->login, 30);
         return response()->json([
             'error' => null,
             'result' => [
                 'success' => true,
                 'token' => $token->plainTextToken,
-                'url' => route('admin.index'),
+                'url' => route('auth.redirect', ['key' => $key]),
             ],
         ]);
     }
