@@ -18,8 +18,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/admin', [MainController::class, 'index'])->name('admin.index');
+Route::middleware('auth')->prefix('admin')->group(function () {
+    Route::get('/', [MainController::class, 'index'])->name('admin.index');
+    Route::get('/create', [MainController::class, 'create'])->name('admin.create');
 });
 
 Route::get('/login', \App\Http\Controllers\Auth\LoginController::class)->name('login');

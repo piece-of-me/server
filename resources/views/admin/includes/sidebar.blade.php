@@ -17,13 +17,28 @@
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
-            <ul id="general-events" class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <ul id="general-events" class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                data-accordion="false">
             </ul>
         </nav>
         <nav class="mt-2">
-            <ul id="user-events" class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <ul id="user-events" class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                data-accordion="false">
             </ul>
         </nav>
+        @if(request()->routeIs('admin.index'))
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
+                    <li class="nav-item">
+                        <a href="{{ route('admin.create') }}" class="nav-link">
+                            <i class="nav-icon fas fa-plus"></i>
+                            <p>Добавить событие</p>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        @endif
         <!-- /.sidebar-menu -->
     </div>
     <!-- /.sidebar -->

@@ -2,7 +2,7 @@ const Modal = (function () {
     const $modal = $('#modal-danger');
     const $header = $modal.find('.modal-title');
     const $body = $modal.find('.modal-body');
-    $modal.find('.close').on('click', function () {
+    $modal.find('.close').off('click').on('click', function () {
         hide();
     });
 

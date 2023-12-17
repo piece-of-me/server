@@ -79,12 +79,6 @@ const Events = (function () {
                 '</a>' +
                 '</li>';
         }, '<li class="nav-header">Мои события</li>');
-        html += '<li class="nav-item">' +
-            '<a href="javascript:void(0)" class="nav-link">' +
-            '<i class="nav-icon fas fa-plus"></i>' +
-            '<p>Добавить событие</p>' +
-            '</a>' +
-            '</li>';
         $userEvents.html(html);
         addEventClickHandlers($userEvents);
     }
