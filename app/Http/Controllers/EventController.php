@@ -6,6 +6,7 @@ use App\Http\Requests\Api\Event\StoreRequest;
 use App\Http\Resources\Event\EventResource;
 use App\Http\Resources\Event\IndexEventResource;
 use App\Models\Event;
+use App\Models\UsersEvent;
 use App\Services\EventService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -51,6 +52,55 @@ class EventController extends Controller
         return response()->json([
             'error' => null,
             'result' => new IndexEventResource($event),
+        ]);
+    }
+
+    public function join(Event $event): JsonResponse
+    {
+        $usersEvent = UsersEvent::firstOrCreate([
+            'user_id' => Auth::user()->id,
+            'event_id' => $event->id,
+        ]);
+        if ($usersEvent->id) {
+            return response()->json([
+                'error' => null,
+                'result' => [
+                    'success' => true,
+                ],
+            ]);
+        }
+        return response()->json(status: Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+
+    public function refuse(Event $event): JsonResponse
+    {
+        $userEvent = UsersEvent::where('user_id', Auth::user()->id)->where('event_id', $event->id)->first();
+        if (!$userEvent) {
+            return response()->json([
+                'error' => false,
+                'result' => [
+                    'success' => false,
+                    'message' => 'Пользователь не участвует в событии',
+                ],
+            ]);
+        }
+        $userEvent->delete();
+        return response()->json([
+            'error' => false,
+            'result' => [
+                'success' => true,
+            ],
+        ]);
+    }
+
+    public function destroy(Event $event): JsonResponse
+    {
+        $event->delete();
+        return response()->json([
+            'error' => null,
+            'result' => [
+                'success' => true,
+            ],
         ]);
     }
 }

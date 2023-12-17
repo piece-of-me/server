@@ -23,11 +23,15 @@
 
                 <hr>
                 <button id="join-button" type="button" class="btn btn-block btn-primary btn-lg">Принять участие</button>
-                <button id="refuse-button" type="button" class="btn btn-block btn-warning btn-lg">Отказаться от
-                    участия
+                <button id="refuse-button" type="button" class="btn btn-block btn-warning btn-lg">
+                    Отказаться от участия
+                </button>
+                <button id="delete-button" type="button" class="btn btn-block btn-danger btn-lg">
+                    Удалить событие
                 </button>
             </div>
         </div>
     </div>
+    @include('includes.modal')
     @vite(['resources/js/app.js', 'resources/js/admin.js'])
 @endsection

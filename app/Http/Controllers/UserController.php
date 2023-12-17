@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use App\Http\Requests\Api\User\StoreRequest;
 use App\Http\Requests\Api\User\LoginRequest;
@@ -11,6 +12,14 @@ use Illuminate\Support\Facades\Cache;
 
 class UserController extends Controller
 {
+    public function me(): JsonResponse
+    {
+        return response()->json([
+            'error' => null,
+            'result' => new UserResource(Auth::user()),
+        ]);
+    }
+
     public function store(StoreRequest $request): JsonResponse
     {
         $data = $request->validated();

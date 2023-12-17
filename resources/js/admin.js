@@ -1,4 +1,22 @@
-jQuery(document).ready(function () {
+import Modal from '@/modal.js';
+
+jQuery(document).ready(async function () {
+    await (async function () {
+        const request = axios.get('/api/user');
+        const result = await request
+            .then(({status, data}) => {
+                if (status !== 200 || data.error) {
+                    return {};
+                }
+                return data.result;
+            })
+            .catch((e) => {
+                console.error(e);
+                return {};
+            });
+        Events.setUser(result);
+    })();
+
     Events.updateGeneral();
     Events.updateUsers();
 });
@@ -7,8 +25,12 @@ const Events = (function () {
     const $generalEvents = $('#general-events');
     const $userEvents = $('#user-events');
     const $eventContainer = $('#event-container');
+    const $joinButton = $eventContainer.find('#join-button');
+    const $refuseButton = $eventContainer.find('#refuse-button');
+    const $deleteButton = $eventContainer.find('#delete-button');
     let generalEvents;
     let userEvents;
+    let user = {};
 
     /**
      * Загрузка событий
@@ -115,6 +137,7 @@ const Events = (function () {
         const participants = event.participants ?? [];
 
         const isUserEvent = Array.isArray(userEvents) && userEvents.some((event) => event.id === eventId);
+        const canJoin = !isUserEvent && participants.every((participant) => participant.id !== user.id);
 
         $eventContainer.find('#event-header').text(header);
         $eventContainer.find('#event-text').text(text);
@@ -128,8 +151,57 @@ const Events = (function () {
             $eventContainer.find('#participants').html('<p>Нет участников</p>');
         }
 
-        $('#join-button').toggle(!isUserEvent);
-        $('#refuse-button').toggle(isUserEvent);
+        $joinButton.toggle(canJoin).off('click').on('click', function () {
+            changeActivity(eventId, true);
+        });
+        $refuseButton.toggle(!canJoin).off('click').on('click', function () {
+            changeActivity(eventId, false);
+        });
+        $deleteButton.toggle(isUserEvent).off('click').on('click', function () {
+            deleteEvent(eventId);
+        });
+    }
+
+    async function changeActivity(eventId, activity) {
+        const request = axios.get('/api/events/' + eventId + '/' + (activity ? 'join' : 'refuse'));
+        const result = await request
+            .then(({status, data}) => {
+                if (status !== 200 || data.error) {
+                    return null;
+                }
+                return data.result;
+            })
+            .catch((e) => {
+                Modal.show('Ошибка', 'Возникла ошибка во время удаления события. Пожалуйста, перезагрузите страницу.');
+                console.error(e);
+                return null;
+            });
+        if (result.success) {
+            $eventContainer.hide();
+            await fillEventInfo(eventId);
+            $eventContainer.show();
+        }
+    }
+
+    async function deleteEvent(eventId) {
+        const request = axios.delete('/api/events/' + eventId);
+        const result = await request
+            .then(({status, data}) => {
+                if (status !== 200 || data.error) {
+                    return null;
+                }
+                return data.result;
+            })
+            .catch((e) => {
+                Modal.show('Ошибка', 'Возникла ошибка во время удаления события. Пожалуйста, перезагрузите страницу.');
+                console.error(e);
+                return null;
+            });
+        if (result.success) {
+            updateGeneral();
+            updateUsers();
+            $eventContainer.hide();
+        }
     }
 
     async function checkLocalStorageEvents() {
@@ -144,5 +216,8 @@ const Events = (function () {
     return {
         updateGeneral,
         updateUsers,
+        setUser(userData) {
+            user = userData;
+        }
     };
 })();
