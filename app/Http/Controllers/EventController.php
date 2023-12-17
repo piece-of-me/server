@@ -77,7 +77,7 @@ class EventController extends Controller
         $userEvent = UsersEvent::where('user_id', Auth::user()->id)->where('event_id', $event->id)->first();
         if (!$userEvent) {
             return response()->json([
-                'error' => false,
+                'error' => null,
                 'result' => [
                     'success' => false,
                     'message' => 'Пользователь не участвует в событии',
@@ -86,7 +86,7 @@ class EventController extends Controller
         }
         $userEvent->delete();
         return response()->json([
-            'error' => false,
+            'error' => null,
             'result' => [
                 'success' => true,
             ],

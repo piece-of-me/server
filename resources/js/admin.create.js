@@ -1,7 +1,9 @@
 import Modal from '@/modal.js';
+import Loader from '@/loader.js';
 
 jQuery(document).ready(function () {
     initForm();
+    Loader.hide();
 });
 
 function initForm() {
@@ -13,6 +15,7 @@ function initForm() {
     });
 
     async function createEvent(data) {
+        Loader.show();
         const request = axios.post('/api/events', data);
         const result = await request
             .then(({status, data}) => {

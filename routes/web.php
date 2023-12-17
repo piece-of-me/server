@@ -18,9 +18,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware('auth')->prefix('admin')->group(function () {
-    Route::get('/', [MainController::class, 'index'])->name('admin.index');
-    Route::get('/create', [MainController::class, 'create'])->name('admin.create');
+Route::middleware('auth')->group(function () {
+    Route::prefix('admin')->group(function () {
+        Route::get('/', [MainController::class, 'index'])->name('admin.index');
+        Route::get('/create', [MainController::class, 'create'])->name('admin.create');
+    });
+
+    Route::get('/logout', \App\Http\Controllers\Auth\LogoutController::class)->name('logout');
 });
 
 Route::get('/login', \App\Http\Controllers\Auth\LoginController::class)->name('login');

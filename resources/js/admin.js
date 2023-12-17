@@ -1,4 +1,5 @@
 import Modal from '@/modal.js';
+import Loader from '@/loader.js';
 
 jQuery(document).ready(async function () {
     await (async function () {
@@ -17,8 +18,33 @@ jQuery(document).ready(async function () {
         Events.setUser(result);
     })();
 
+    $('#exit-button').off('click').on('click', async function () {
+        Loader.show();
+        const request = axios.post('/api/users/logout');
+        const result = await request
+            .then(({status, data}) => {
+                if (status !== 200 || data.error) {
+                    return null;
+                }
+                return data.result;
+            })
+            .catch((e) => {
+                console.error(e);
+                return null;
+            });
+
+        if (!result || !result.success || !result.url) {
+            Modal.show('Ошибка', 'Возникла ошибка во время удаления события. Пожалуйста, перезагрузите страницу.');
+            Loader.hide();
+            return;
+        }
+        localStorage.removeItem('user-token');
+        document.location.replace(result.url);
+    });
+
     Events.updateGeneral();
-    Events.updateUsers();
+    await Events.updateUsers();
+    Loader.hide();
 });
 
 const Events = (function () {
@@ -107,16 +133,18 @@ const Events = (function () {
         }
 
         await body();
-        checkLocalStorageEvents();
+        await checkLocalStorageEvents();
         updateUsers = body;
     }
 
     function addEventClickHandlers($container) {
         $container.find('.nav-link').off('click').on('click', async function () {
             const eventId = $(this).data('id');
-            $eventContainer.toggle(false);
+            Loader.show();
+            $eventContainer.hide();
             await fillEventInfo(eventId);
             $eventContainer.show();
+            Loader.hide();
         });
     }
 
@@ -137,7 +165,7 @@ const Events = (function () {
         const participants = event.participants ?? [];
 
         const isUserEvent = Array.isArray(userEvents) && userEvents.some((event) => event.id === eventId);
-        const canJoin = !isUserEvent && participants.every((participant) => participant.id !== user.id);
+        const canJoin = participants.every((participant) => participant.id !== user.id);
 
         $eventContainer.find('#event-header').text(header);
         $eventContainer.find('#event-text').text(text);
@@ -151,10 +179,10 @@ const Events = (function () {
             $eventContainer.find('#participants').html('<p>Нет участников</p>');
         }
 
-        $joinButton.toggle(canJoin).off('click').on('click', function () {
+        $joinButton.toggle(!isUserEvent && canJoin).off('click').on('click', function () {
             changeActivity(eventId, true);
         });
-        $refuseButton.toggle(!canJoin).off('click').on('click', function () {
+        $refuseButton.toggle(!isUserEvent && !canJoin).off('click').on('click', function () {
             changeActivity(eventId, false);
         });
         $deleteButton.toggle(isUserEvent).off('click').on('click', function () {
@@ -163,6 +191,7 @@ const Events = (function () {
     }
 
     async function changeActivity(eventId, activity) {
+        Loader.show();
         const request = axios.get('/api/events/' + eventId + '/' + (activity ? 'join' : 'refuse'));
         const result = await request
             .then(({status, data}) => {
@@ -181,9 +210,11 @@ const Events = (function () {
             await fillEventInfo(eventId);
             $eventContainer.show();
         }
+        Loader.hide();
     }
 
     async function deleteEvent(eventId) {
+        Loader.show();
         const request = axios.delete('/api/events/' + eventId);
         const result = await request
             .then(({status, data}) => {
@@ -198,10 +229,11 @@ const Events = (function () {
                 return null;
             });
         if (result.success) {
-            updateGeneral();
-            updateUsers();
             $eventContainer.hide();
+            updateGeneral();
+            await updateUsers();
         }
+        Loader.hide();
     }
 
     async function checkLocalStorageEvents() {

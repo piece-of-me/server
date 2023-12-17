@@ -24,6 +24,8 @@ Route::prefix('users')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [UserController::class, 'me'])->name('user.me');
 
+    Route::post('/users/logout', [UserController::class, 'logout'])->name('users.logout');
+
     Route::prefix('events')->group(function () {
         Route::get('/', [EventController::class, 'index'])->name('events.index');
         Route::get('/user', [EventController::class, 'userIndex'])->name('events.user.index');

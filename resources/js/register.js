@@ -1,4 +1,5 @@
-import Modal from "@/modal.js";
+import Modal from '@/modal.js';
+import Loader from '@/loader.js';
 
 jQuery(document).ready(function () {
     initForm();
@@ -6,6 +7,7 @@ jQuery(document).ready(function () {
         format: 'DD.MM.YYYY',
         maxDate: new Date(),
     });
+    Loader.hide();
 });
 
 function initForm() {
@@ -15,10 +17,13 @@ function initForm() {
         e.preventDefault();
 
         requestInProcess = true;
+        Loader.show();
         const res = await register.make(collectFormData());
-
         requestInProcess = false;
-        if (!res) return;
+        if (!res) {
+            Loader.hide();
+            return;
+        }
 
         const token = res.token || '';
         const url = res.url || '';

@@ -1,7 +1,9 @@
-import Modal from "@/modal.js";
+import Modal from '@/modal.js';
+import Loader from '@/loader.js';
 
 jQuery(document).ready(function () {
     initForm();
+    Loader.hide();
 });
 
 function initForm() {
@@ -11,10 +13,14 @@ function initForm() {
         e.preventDefault();
 
         requestInProcess = true;
+        Loader.show();
         const res = await login.make(collectFormData());
 
         requestInProcess = false;
-        if (!res) return;
+        if (!res) {
+            Loader.hide();
+            return;
+        }
 
         const token = res.token || '';
         const url = res.url || '';

@@ -19,7 +19,8 @@
 
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
-        <img class="animation__wobble" src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTELogo" height="60" width="60">
+        <img class="animation__wobble" src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTELogo" height="60" width="60" style="animation-iteration-count: infinite;">
+        <p class="text-center mt-2">Выполняется запрос...</p>
     </div>
 
     <!-- Navbar -->
@@ -31,7 +32,7 @@
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="#" class="nav-link">Выйти</a>
+                <a id="exit-button" href="javascript:void(0);" class="nav-link">Выйти</a>
             </li>
         </ul>
     </nav>

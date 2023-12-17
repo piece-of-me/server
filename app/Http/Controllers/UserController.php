@@ -67,4 +67,18 @@ class UserController extends Controller
             ],
         ]);
     }
+
+    public function logout(): JsonResponse
+    {
+        $user = Auth::user();
+        $user->tokens()->delete();
+
+        return response()->json([
+            'error' => null,
+            'result' => [
+                'success' => true,
+                'url' => route('logout'),
+            ],
+        ]);
+    }
 }
