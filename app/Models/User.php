@@ -29,4 +29,14 @@ class User extends Authenticatable
     public const LOGIN_MAX_LENGTH = 50;
     public const PASSWORD_MAX_LENGTH = 100;
     public const FIO_MAX_LENGTH = 50;
+
+    public function getFIOAttribute(): string
+    {
+        return $this->firstname . ' ' . $this->lastname;
+    }
+
+    public function events(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Event::class, 'creator_id', 'id');
+    }
 }

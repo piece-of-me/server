@@ -34,7 +34,6 @@ class Handler extends ExceptionHandler
         if ($request->is('api')) {
             $request->headers->set('Accept', 'application/json');
         }
-        dd($e);
         if ($e instanceof HttpResponseException) {
             dd('Yes');
         }

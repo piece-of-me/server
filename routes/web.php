@@ -22,6 +22,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin', [MainController::class, 'index'])->name('admin.index');
 });
 
-Route::get('/login', \App\Http\Controllers\Auth\LoginController::class)->name('login.index');
+Route::get('/login', \App\Http\Controllers\Auth\LoginController::class)->name('login');
 Route::get('/login/{key}', \App\Http\Controllers\Auth\RedirectController::class)->name('auth.redirect');
 Route::get('/register', \App\Http\Controllers\Auth\RegisterController::class)->name('register.index');

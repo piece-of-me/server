@@ -48,7 +48,7 @@
                     <div class="card-footer">
                         <div class="d-flex justify-content-between">
                             <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
-                            <a class="btn btn-primary" href="{{ route('login.index') }}">
+                            <a class="btn btn-primary" href="{{ route('login') }}">
                                 Авторизоваться
                             </a>
                         </div>

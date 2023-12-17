@@ -14,7 +14,7 @@ class RedirectController extends Controller
         $login = Cache::get($key);
         Cache::forget($key);
         if (!isset($login)) {
-            return redirect()->route('login.index');
+            return redirect()->route('login');
         }
         $user = User::firstWhere('login', $login);
         Auth::login($user);
