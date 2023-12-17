@@ -3,7 +3,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Dashboard 2</title>
+    @if(request()->routeIs('login'))
+        <title>Авторизация</title>
+    @else
+        <title>Регистрация</title>
+    @endif
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -55,28 +59,11 @@
 
 <!-- REQUIRED SCRIPTS -->
 <!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 
 <script src="{{ asset('plugins/daterangepicker/daterangepicker.js') }}"></script>
 <!-- Bootstrap -->
 <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-<!-- overlayScrollbars -->
-{{--<script src="{{ asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>--}}
-<!-- AdminLTE App -->
-{{--<script src="{{ asset('dist/js/adminlte.js') }}"></script>--}}
-
-<!-- PAGE PLUGINS -->
-<!-- jQuery Mapael -->
-{{--<script src="{{ asset('plugins/jquery-mousewheel/jquery.mousewheel.js') }}"></script>--}}
-{{--<script src="{{ asset('plugins/raphael/raphael.min.js') }}"></script>--}}
-{{--<script src="{{ asset('plugins/jquery-mapael/jquery.mapael.min.js') }}"></script>--}}
-{{--<script src="{{ asset('plugins/jquery-mapael/maps/usa_states.min.js') }}"></script>--}}
-{{--<!-- ChartJS -->--}}
-{{--<script src="{{ asset('plugins/chart.js/Chart.min.js') }}"></script>--}}
-
-{{--<!-- AdminLTE dashboard demo (This is only for demo purposes) -->--}}
-{{--<script src="{{ asset('dist/js/pages/dashboard2.js') }}"></script>--}}
 <script src="{{ asset('plugins/moment/moment.min.js') }}"></script>
 <script src="{{ asset('plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
 @vite('resources/js/app.js')

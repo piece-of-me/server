@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Dashboard 2</title>
+    <title>Админ панель</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -82,14 +82,11 @@
 
 <!-- PAGE PLUGINS -->
 <!-- jQuery Mapael -->
-<script src="{{ asset('plugins/jquery-mousewheel/jquery.mousewheel.js') }}"></script>
-<script src="{{ asset('plugins/raphael/raphael.min.js') }}"></script>
-<script src="{{ asset('plugins/jquery-mapael/jquery.mapael.min.js') }}"></script>
-<script src="{{ asset('plugins/jquery-mapael/maps/usa_states.min.js') }}"></script>
+{{--<script src="{{ asset('plugins/jquery-mousewheel/jquery.mousewheel.js') }}"></script>--}}
+{{--<script src="{{ asset('plugins/raphael/raphael.min.js') }}"></script>--}}
+{{--<script src="{{ asset('plugins/jquery-mapael/jquery.mapael.min.js') }}"></script>--}}
+{{--<script src="{{ asset('plugins/jquery-mapael/maps/usa_states.min.js') }}"></script>--}}
 <!-- ChartJS -->
 <script src="{{ asset('plugins/chart.js/Chart.min.js') }}"></script>
-
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="{{ asset('dist/js/pages/dashboard2.js') }}"></script>
 </body>
 </html>
