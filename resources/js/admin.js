@@ -63,24 +63,30 @@ const Events = (function () {
     }
 
     async function updateUsers() {
-        userEvents = await load(true);
-        if (!userEvents) {
-            return;
+        async function body() {
+            userEvents = await load(true);
+            if (!userEvents) {
+                return;
+            }
+            if (userEvents.length <= 0) {
+                $userEvents.html('<li class="nav-header">Мои события</li>'
+                    + '<li class="nav-item"><a href="javascript:void(0)" class="nav-link">Событий нет</a></li>');
+                return;
+            }
+            let html = userEvents.reduce(function (res, event) {
+                return res + '<li class="nav-item">' +
+                    '<a href="javascript:void(0)" class="nav-link" data-id="' + event.id + '">' +
+                    '<p>' + event.header + '</p>' +
+                    '</a>' +
+                    '</li>';
+            }, '<li class="nav-header">Мои события</li>');
+            $userEvents.html(html);
+            addEventClickHandlers($userEvents);
         }
-        if (userEvents.length <= 0) {
-            $userEvents.html('<li class="nav-header">Мои события</li>'
-                + '<li class="nav-item"><a href="javascript:void(0)" class="nav-link">Событий нет</a></li>');
-            return;
-        }
-        let html = userEvents.reduce(function (res, event) {
-            return res + '<li class="nav-item">' +
-                '<a href="javascript:void(0)" class="nav-link" data-id="' + event.id + '">' +
-                '<p>' + event.header + '</p>' +
-                '</a>' +
-                '</li>';
-        }, '<li class="nav-header">Мои события</li>');
-        $userEvents.html(html);
-        addEventClickHandlers($userEvents);
+
+        await body();
+        checkLocalStorageEvents();
+        updateUsers = body;
     }
 
     function addEventClickHandlers($container) {
@@ -124,6 +130,15 @@ const Events = (function () {
 
         $('#join-button').toggle(!isUserEvent);
         $('#refuse-button').toggle(isUserEvent);
+    }
+
+    async function checkLocalStorageEvents() {
+        const eventId = localStorage.getItem('event_id');
+        if (eventId) {
+            localStorage.removeItem('event_id');
+            await fillEventInfo(eventId);
+            $eventContainer.show();
+        }
     }
 
     return {

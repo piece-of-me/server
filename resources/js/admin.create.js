@@ -25,11 +25,12 @@ function initForm() {
                 console.error(e);
                 return null;
             });
-        if (!result) {
+        if (!result || !result.id) {
             Modal.show('Ошибка',
                 'Во время выполнения запроса произошла ошибка. Пожалуйста, перезагрузит страницу и попробуйте снова.');
             return;
         }
+        localStorage.setItem('event_id', result.id);
         document.location.replace(document.location.pathname.replace('create', ''));
     }
 }
